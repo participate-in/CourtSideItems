@@ -2,7 +2,7 @@
 
 on:
   push:
-    branches: [ master ] # masterブランチへのプッシュで起動
+    branches: [ gh-pages ] # gh-pagesブランチへのプッシュで起動
 
 permissions:
   contents: read
