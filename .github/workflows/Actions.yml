@@ -20,7 +20,7 @@ jobs:
 
       # 3. Blazor アプリのビルド（.csproj を明示的に指定）
       - name: Publish Blazor WebAssembly
-        run: dotnet publish CourtSideItems/CourtSideItems.csproj -c Release -o release
+        run: dotnet publish CourtSideItems.csproj -c Release -o release
 
       # 4. 404エラー対策（.nojekyll と 404.html の自動生成）
       - name: Add .nojekyll & 404.html
