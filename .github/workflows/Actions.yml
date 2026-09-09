@@ -2,7 +2,7 @@
 
 on:
   push:
-    branches: [ main ] # main ブランチに push されたら自動実行
+    branches: [ master ] # master ブランチに push されたら自動実行
 
 jobs:
   build-and-deploy:
