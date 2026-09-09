@@ -2,13 +2,13 @@
 
 on:
   push:
-    branches: [ master ] # master ブランチに push されたら自動実行
+    branches: [ master ] # master  へのプッシュで起動
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. リポジトリのコードを取得
+      # 1. コードの取得
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -16,21 +16,21 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x' # お使いの.NETバージョンに合わせて変更
+          dotnet-version: '8.0.x'
 
-      # 3. Blazor アプリの発行（Publish）
+      # 3. Blazor アプリのビルド（.csproj を明示的に指定）
       - name: Publish Blazor WebAssembly
-        run: dotnet publish -c Release -o release
+        run: dotnet publish CourtSideItems/CourtSideItems.csproj -c Release -o release
 
-      # 4. 404エラー対策（正しい名前の .nojekyll と 404.html の自動生成）
+      # 4. 404エラー対策（.nojekyll と 404.html の自動生成）
       - name: Add .nojekyll & 404.html
         run: |
-          touch release/wwwroot/.nojekyll
+          echo "" > release/wwwroot/.nojekyll
           cp release/wwwroot/index.html release/wwwroot/404.html
 
-      # 5. wwwroot の「中身だけ」を gh-pages ブランチの一番上に上書きデプロイ
+      # 5. wwwroot の中身だけを gh-pages ブランチにデプロイ
       - name: Deploy to gh-pages branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          FOLDER: release/wwwroot # ★ここがポイント！wwwrootの中身だけを出力します
+          FOLDER: release/wwwroot
           BRANCH: gh-pages
