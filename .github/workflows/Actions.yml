@@ -16,21 +16,21 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '8.0.x' # お使いの.NETバージョンに合わせて変更
 
       # 3. Blazor アプリの発行（Publish）
       - name: Publish Blazor WebAssembly
         run: dotnet publish -c Release -o release
 
-      # 4. 404エラー対策（.nojekyll と 404.html の生成）
+      # 4. 404エラー対策（正しい名前の .nojekyll と 404.html の自動生成）
       - name: Add .nojekyll & 404.html
         run: |
           touch release/wwwroot/.nojekyll
           cp release/wwwroot/index.html release/wwwroot/404.html
 
-      # 5. wwwroot の「中身だけ」を gh-pages ブランチにデプロイ
+      # 5. wwwroot の「中身だけ」を gh-pages ブランチの一番上に上書きデプロイ
       - name: Deploy to gh-pages branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          FOLDER: release/wwwroot # wwwroot の中身だけをルートに配置
-          BRANCH: gh-pages        # 自動で gh-pages ブランチを作成・更新
+          FOLDER: release/wwwroot # ★ここがポイント！wwwrootの中身だけを出力します
+          BRANCH: gh-pages
