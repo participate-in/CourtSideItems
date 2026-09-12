@@ -2,7 +2,7 @@
 
 on:
   push:
-    branches: [ master ] # master  へのプッシュで起動
+    branches: [ master ] # master へのプッシュで起動
 
 jobs:
   build-and-deploy:
@@ -18,13 +18,14 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      # 3. Blazor アプリのビルド（.csproj を明示的に指定）
+      # 3. Blazor アプリのビルド
       - name: Publish Blazor WebAssembly
         run: dotnet publish CourtSideItems.csproj -c Release -o release
 
-      # 4. 404エラー対策（.nojekyll と 404.html の自動生成）
-      - name: Add .nojekyll & 404.html
+      # 4. 404エラー対策（base href の修正、.nojekyll、404.html）
+      - name: Fix base href & Add .nojekyll / 404.html
         run: |
+          sed -i 's///g' release/wwwroot/index.html
           echo "" > release/wwwroot/.nojekyll
           cp release/wwwroot/index.html release/wwwroot/404.html
 
